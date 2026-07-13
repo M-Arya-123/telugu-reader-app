@@ -136,4 +136,4 @@ UI polish and deployment
 
 # Current Status
 
-V1 planning and architecture phase.
+V2 UI phase.
