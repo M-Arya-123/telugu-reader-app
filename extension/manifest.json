@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "Telugu Reading Assistant",
+  "version": "1.0.0",
+  "description": "Hover over Telugu text on any website to see phonetic transliterations.",
+  "action": {
+    "default_title": "Telugu Reader",
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "css": [
+        "content.css"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}
