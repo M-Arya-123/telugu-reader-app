@@ -9,7 +9,7 @@
     "lint": "eslint",
     "parser-test": "tsx src/core/parser/test.ts",
     "build:extension": "esbuild extension/src/content.ts --bundle --outfile=extension/content.js --target=chrome100 && esbuild extension/src/popup.ts --bundle --outfile=extension/popup.js --target=chrome100",
-    "build:bookmarklet": "esbuild extension/src/bookmarklet.ts --bundle --minify --outfile=extension/bookmarklet.min.js --target=chrome100"
+    "build:bookmarklet": "esbuild extension/src/bookmarklet.ts --bundle --minify --outfile=public/bookmarklet.js --target=chrome100 && esbuild extension/src/bookmarklet.ts --bundle --minify --outfile=extension/bookmarklet.min.js --target=chrome100"
   },
   "dependencies": {
     "next": "16.2.6",

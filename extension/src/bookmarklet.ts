@@ -1,11 +1,48 @@
 import { parseTeluguWord } from "../../src/core/parser/parseTeluguWord";
 import { TELUGU_UNICODE_REGEX } from "../../src/core/parser/teluguUnicode";
 
+function showActivationToast() {
+  const existing = document.getElementById("telugu-reader-toast");
+  if (existing) existing.remove();
+
+  const toast = document.createElement("div");
+  toast.id = "telugu-reader-toast";
+  toast.style.cssText = `
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #0f172a;
+    color: #38bdf8;
+    padding: 10px 20px;
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    z-index: 2147483647;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+    border: 1.5px solid #0284c7;
+    pointer-events: none;
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    text-align: center;
+    white-space: nowrap;
+  `;
+  toast.textContent = "✨ Telugu Reader Active! Tap any word";
+  document.body.appendChild(toast);
+
+  setTimeout(() => {
+    toast.style.opacity = "0";
+    toast.style.transform = "translateX(-50%) translateY(-10px)";
+    setTimeout(() => toast.remove(), 500);
+  }, 2500);
+}
+
 // Prevent double injection
 if ((window as any).__teluguReaderLoaded) {
-  alert("Telugu Reader is already active! Tap any Telugu word.");
+  showActivationToast();
 } else {
   (window as any).__teluguReaderLoaded = true;
+  showActivationToast();
 
   // 1. Inject CSS for tooltip and amber highlight
   const css = `
@@ -73,7 +110,11 @@ if ((window as any).__teluguReaderLoaded) {
   tooltipElement.appendChild(arrow);
   document.body.appendChild(tooltipElement);
 
+  let lastShowTime = 0;
+  let lastTouchTime = 0;
+
   function showAt(text: string, rect: DOMRect) {
+    lastShowTime = Date.now();
     // 1. Position amber highlight exactly over the character
     highlightElement.style.left = `${rect.left}px`;
     highlightElement.style.top = `${rect.top}px`;
@@ -176,17 +217,15 @@ if ((window as any).__teluguReaderLoaded) {
         phonetic: targetCluster.combinedPhonetic,
         rect,
       };
-    } catch (e) {
+    } catch {
       return null;
     }
   }
 
   // 4. Tap Handler (Click or Mobile Tap)
-  // Clear any accidental text selection triggered by touch
   function handleTap(clientX: number, clientY: number) {
     const result = getWordAtPoint(clientX, clientY);
     if (result && result.phonetic && result.rect) {
-      // Clear native text selection to kill the "Copy / Paste" menu
       const sel = window.getSelection();
       if (sel) sel.removeAllRanges();
       showAt(result.phonetic, result.rect);
@@ -195,19 +234,21 @@ if ((window as any).__teluguReaderLoaded) {
     }
   }
 
-  // Tap listener for both mobile and desktop
+  // Touch on mobile
+  document.addEventListener("touchend", (e: TouchEvent) => {
+    if (e.changedTouches.length !== 1) return;
+    lastTouchTime = Date.now();
+    const touch = e.changedTouches[0];
+    handleTap(touch.clientX, touch.clientY);
+  }, { passive: true });
+
+  // Desktop click or non-touch fallback (prevent double firing after touchend)
   document.addEventListener("click", (e: MouseEvent) => {
+    if (Date.now() - lastTouchTime < 600) return;
     handleTap(e.clientX, e.clientY);
   });
 
-  // Tap on touch devices
-  document.addEventListener("touchend", (e: TouchEvent) => {
-    if (e.changedTouches.length !== 1) return;
-    const touch = e.changedTouches[0];
-    handleTap(touch.clientX, touch.clientY);
-  });
-
-  // Prevent default copy/select popup on long press
+  // Long-press contextmenu prevention on Telugu text
   document.addEventListener("contextmenu", (e) => {
     const result = getWordAtPoint(e.clientX, e.clientY);
     if (result) {
@@ -218,5 +259,10 @@ if ((window as any).__teluguReaderLoaded) {
     }
   });
 
-  window.addEventListener("scroll", hideAll, { passive: true });
+  // Only hide on genuine scrolling, not micro-touch jitters
+  window.addEventListener("scroll", () => {
+    if (Date.now() - lastShowTime > 400) {
+      hideAll();
+    }
+  }, { passive: true });
 }

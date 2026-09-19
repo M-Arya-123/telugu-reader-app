@@ -7,8 +7,8 @@ type BookmarkletModalProps = {
   onClose: () => void;
 };
 
-// The fully self-contained offline bookmarklet URL string
-const BOOKMARKLET_CODE = `javascript:%22use%20strict%22;(()=%3E%7Bvar%20X=%5B%22%5Cu0C3E%22,%22%5Cu0C3F%22,%22%5Cu0C40%22,%22%5Cu0C41%22,%22%5Cu0C42%22,%22%5Cu0C43%22,%22%5Cu0C46%22,%22%5Cu0C47%22,%22%5Cu0C48%22,%22%5Cu0C4A%22,%22%5Cu0C4B%22,%22%5Cu0C4C%22%5D,F=%5B%22%5Cu0C05%22,%22%5Cu0C06%22,%22%5Cu0C07%22,%22%5Cu0C08%22,%22%5Cu0C09%22,%22%5Cu0C0A%22,%22%5Cu0C0B%22,%22%5Cu0C0E%22,%22%5Cu0C0F%22,%22%5Cu0C10%22,%22%5Cu0C12%22,%22%5Cu0C13%22,%22%5Cu0C14%22%5D,z=%5B%22%5Cu0C15%22,%22%5Cu0C16%22,%22%5Cu0C17%22,%22%5Cu0C18%22,%22%5Cu0C19%22,%22%5Cu0C1A%22,%22%5Cu0C1B%22,%22%5Cu0C1C%22,%22%5Cu0C1D%22,%22%5Cu0C1E%22,%22%5Cu0C1F%22,%22%5Cu0C20%22,%22%5Cu0C21%22,%22%5Cu0C22%22,%22%5Cu0C23%22,%22%5Cu0C24%22,%22%5Cu0C25%22,%22%5Cu0C26%22,%22%5Cu0C27%22,%22%5Cu0C28%22,%22%5Cu0C2A%22,%22%5Cu0C2B%22,%22%5Cu0C2C%22,%22%5Cu0C2D%22,%22%5Cu0C2E%22,%22%5Cu0C2F%22,%22%5Cu0C30%22,%22%5Cu0C32%22,%22%5Cu0C35%22,%22%5Cu0C36%22,%22%5Cu0C37%22,%22%5Cu0C38%22,%22%5Cu0C39%22,%22%5Cu0C33%22,%22%5Cu0C15%5Cu0C4D%5Cu0C37%22,%22%5Cu0C31%22%5D,T=/%5B%5Cu0C00-%5Cu0C7F%5D/;function%20O(t)%7Breturn%20X.includes(t)%7Dfunction%20_(t)%7Breturn%20z.includes(t)%7Dfunction%20V(t)%7Breturn%20F.includes(t)%7Dfunction%20P(t)%7Breturn%20t===%22%5Cu0C4D%22%7Dfunction%20w(t)%7Breturn%20t===%22%5Cu0C02%22%7Dfunction%20k(t)%7Blet%20l=%5B%5D,e=0;for(;e%3Ct.length;)%7Blet%20n=t%5Be%5D;if(V(n))%7Blet%20i=n,s;t%5Be+1%5D&&w(t%5Be+1%5D)&&(s=t%5Be+1%5D,i+=s,e++),l.push(%7Bvowel:n,anusvara:s,combined:i%7D),e++;continue%7Dif(_(n))%7Blet%20i=%5B%5D,s=%22%22;for(i.push(%7Btelugu:n,hasVirama:!1%7D),s+=n;t%5Be+1%5D&&P(t%5Be+1%5D);)%7Bs+=t%5Be+1%5D;let%20g=t%5Be+2%5D;if(g&&_(g))i%5Bi.length-1%5D.hasVirama=!0,i.push(%7Btelugu:g,hasVirama:!1%7D),s+=g,e+=2;else%20break%7Dlet%20r;t%5Be+1%5D&&O(t%5Be+1%5D)&&(r=t%5Be+1%5D,s+=r,e++);let%20a;t%5Be+1%5D&&w(t%5Be+1%5D)&&(a=t%5Be+1%5D,s+=a,e++),l.push(%7Bconsonants:i,matra:r,anusvara:a,combined:s%7D),e++;continue%7De++%7Dreturn%20l%7Dvar%20D=%7B%5Cu0C05:%22a%22,%5Cu0C06:%22aa%22,%5Cu0C07:%22i%22,%5Cu0C08:%22ee%22,%5Cu0C09:%22u%22,%5Cu0C0A:%22oo%22,%5Cu0C0B:%22ru%22,%5Cu0C60:%22roo%22,%5Cu0C0C:%22lu%22,%5Cu0C61:%22loo%22,%5Cu0C0E:%22e%22,%5Cu0C0F:%22ee%22,%5Cu0C10:%22ai%22,%5Cu0C12:%22o%22,%5Cu0C13:%22oo%22,%5Cu0C14:%22au%22%7D,G=%7B%22%5Cu0C3E%22:%22aa%22,%22%5Cu0C3F%22:%22i%22,%22%5Cu0C40%22:%22ee%22,%22%5Cu0C41%22:%22u%22,%22%5Cu0C42%22:%22oo%22,%22%5Cu0C43%22:%22ru%22,%22%5Cu0C44%22:%22roo%22,%22%5Cu0C46%22:%22e%22,%22%5Cu0C47%22:%22ee%22,%22%5Cu0C48%22:%22ai%22,%22%5Cu0C4A%22:%22o%22,%22%5Cu0C4B%22:%22oo%22,%22%5Cu0C4C%22:%22au%22%7D,L=%7B%5Cu0C15:%22ka%22,%5Cu0C16:%22kha%22,%5Cu0C17:%22ga%22,%5Cu0C18:%22gha%22,%5Cu0C19:%22nga%22,%5Cu0C1A:%22cha%22,%5Cu0C1B:%22chha%22,%5Cu0C1C:%22ja%22,%5Cu0C1D:%22jha%22,%5Cu0C1E:%22nya%22,%5Cu0C1F:%22ta%22,%5Cu0C20:%22tha%22,%5Cu0C21:%22da%22,%5Cu0C22:%22dha%22,%5Cu0C23:%22na%22,%5Cu0C24:%22ta%22,%5Cu0C25:%22tha%22,%5Cu0C26:%22da%22,%5Cu0C27:%22dha%22,%5Cu0C28:%22na%22,%5Cu0C2A:%22pa%22,%5Cu0C2B:%22pha%22,%5Cu0C2C:%22ba%22,%5Cu0C2D:%22bha%22,%5Cu0C2E:%22ma%22,%5Cu0C2F:%22ya%22,%5Cu0C30:%22ra%22,%5Cu0C32:%22la%22,%5Cu0C35:%22va%22,%5Cu0C36:%22sha%22,%5Cu0C37:%22sha%22,%5Cu0C38:%22sa%22,%5Cu0C39:%22ha%22,%5Cu0C33:%22la%22,%5Cu0C31:%22ra%22%7D;var%20Y=%7B%5Cu0C15%5Cu0C4D%5Cu0C37:%22ksha%22,%5Cu0C1C%5Cu0C4D%5Cu0C1E:%22gnya%22,%5Cu0C36%5Cu0C4D%5Cu0C30:%22shra%22%7D;function%20M(t)%7Breturn%20t.endsWith(%22a%22)?t.slice(0,-1):t%7Dfunction%20W(t)%7Bif(!t?.consonants?.length)return%22m%22;let%20l=t.consonants%5B0%5D.telugu;return%22%5Cu0C15%5Cu0C16%5Cu0C17%5Cu0C18%5Cu0C19%22.includes(l)?%22ng%22:%22%5Cu0C2A%5Cu0C2B%5Cu0C2C%5Cu0C2D%5Cu0C2E%22.includes(l)?%22m%22:%22n%22%7Dfunction%20$(t,l)%7Bif(t.vowel)%7Blet%20a=D%5Bt.vowel%5D%7C%7C%22%5Bunknown%5D%22;return%20t.anusvara&&(a+=W(l)),%7Bconsonants:%5B%5D,anusvara:t.anusvara,combined:t.combined,combinedPhonetic:a%7D%7Dlet%20e=%5B%5D,n=%22%22,i=Y%5Bt.combined%5D;if(i)return%7Bconsonants:(t.consonants??%5B%5D).map(a=%3E(%7Btelugu:a.telugu,phonetic:L%5Ba.telugu%5D%7C%7C%22%5Bunknown%5D%22,hasVirama:a.hasVirama%7D)),combined:t.combined,combinedPhonetic:i%7D;for(let%20r%20of%20t.consonants??%5B%5D)%7Blet%20a=L%5Br.telugu%5D%7C%7C%22%5Bunknown%5D%22;e.push(%7Btelugu:r.telugu,phonetic:a,hasVirama:r.hasVirama%7D),r.hasVirama&&(a=M(a)),n+=a%7Dlet%20s;if(t.matra)%7Blet%20r=G%5Bt.matra%5D%7C%7C%22%5Bunknown%5D%22;n=M(n)+r,s=%7Btelugu:t.matra,phonetic:r%7D%7Dreturn%20t.anusvara&&(n+=W(l)),%7Bconsonants:e,matra:s,anusvara:t.anusvara,combined:t.combined,combinedPhonetic:n%7D%7Dfunction%20I(t)%7Blet%20l=k(t),e=%5B%5D;for(let%20n=0;n%3Cl.length;n++)%7Blet%20i=l%5Bn%5D,s=l%5Bn+1%5D,r=$(i,s);e.push(r)%7Dreturn%7Boriginal:t,clusters:e%7D%7Dif(window.__teluguReaderLoaded)alert(%22Telugu%20Reader%20is%20already%20active!%20Tap%20any%20Telugu%20word.%22);else%7Blet%20r=function(u,o)%7Be.style.left=%60$%7Bo.left%7Dpx%60,e.style.top=%60$%7Bo.top%7Dpx%60,e.style.width=%60$%7Bo.width%7Dpx%60,e.style.height=%60$%7Bo.height%7Dpx%60,e.style.display=%22block%22,i.textContent=u,n.style.left=%60$%7Bo.left+o.width/2%7Dpx%60,n.style.top=%60$%7Bo.top%7Dpx%60,n.style.display=%22block%22%7D,a=function()%7Be.style.display=%22none%22,n.style.display=%22none%22%7D,g=function(u,o)%7Blet%20c=null,h=document;if(h.caretRangeFromPoint)c=h.caretRangeFromPoint(u,o);else%20if(h.caretPositionFromPoint)%7Blet%20d=h.caretPositionFromPoint(u,o);d&&d.offsetNode&&(c=document.createRange(),c.setStart(d.offsetNode,d.offset),c.collapse(!0))%7Dif(!c%7C%7C!c.startContainer%7C%7Cc.startContainer.nodeType!==Node.TEXT_NODE)return%20null;let%20N=c.startContainer,m=N.textContent%7C%7C%22%22,p=c.startOffset,R=m%5Bp%5D;if(!R%7C%7C!T.test(R))if(p%3E0&&T.test(m%5Bp-1%5D))p=p-1,R=m%5Bp%5D;else%20return%20null;let%20f=p;for(;f%3E0&&!/%5Cs%7C%5B.,%5C/#!$%25%5C%5E&%5C*;:%7B%7D=%5C-_%60~()?%5D/.test(m%5Bf-1%5D);)f--;let%20y=p;for(;y%3Cm.length&&!/%5Cs%7C%5B.,%5C/#!$%25%5C%5E&%5C*;:%7B%7D=%5C-_%60~()?%5D/.test(m%5By%5D);)y++;let%20E=m.slice(f,y);if(!E%7C%7C!T.test(E))return%20null;let%20x=I(E);if(!x.clusters.length)return%20null;let%20C=f,b=x.clusters%5Bx.clusters.length-1%5D,v=f;for(let%20d=0;d%3Cx.clusters.length;d++)%7Blet%20S=x.clusters%5Bd%5D,A=C+S.combined.length;if(p%3E=C&&p%3CA)%7Bb=S,v=C;break%7Dif(d===x.clusters.length-1&&p%3C=A)%7Bb=S,v=C;break%7DC=A%7Dtry%7Blet%20d=document.createRange();d.setStart(N,Math.max(0,v)),d.setEnd(N,Math.min(m.length,v+b.combined.length));let%20S=d.getBoundingClientRect();return%7Bword:E,cluster:b.combined,phonetic:b.combinedPhonetic,rect:S%7D%7Dcatch%7Breturn%20null%7D%7D,U=function(u,o)%7Blet%20c=g(u,o);if(c&&c.phonetic&&c.rect)%7Blet%20h=window.getSelection();h&&h.removeAllRanges(),r(c.phonetic,c.rect)%7Delse%20a()%7D;j=r,B=a,q=g,H=U,window.__teluguReaderLoaded=!0;let%20t=%60%20%20%20%20%20#telugu-reader-tooltip%20%7B%20%20%20%20%20%20%20position:%20fixed;%20%20%20%20%20%20%20z-index:%202147483647;%20%20%20%20%20%20%20pointer-events:%20none;%20%20%20%20%20%20%20display:%20none;%20%20%20%20%20%20%20font-family:%20-apple-system,%20BlinkMacSystemFont,%20%22Segoe%20UI%22,%20Roboto,%20sans-serif;%20%20%20%20%20%20%20transform:%20translate(-50%25,%20-100%25);%20%20%20%20%20%20%20margin-top:%20-8px;%20%20%20%20%20%20%20filter:%20drop-shadow(0%204px%206px%20rgba(0,%200,%200,%200.25));%20%20%20%20%20%7D%20%20%20%20%20#telugu-reader-tooltip%20.tooltip-content%20%7B%20%20%20%20%20%20%20background-color:%20#0f172a;%20%20%20%20%20%20%20color:%20#34d399;%20%20%20%20%20%20%20font-size:%2016px;%20%20%20%20%20%20%20font-weight:%20700;%20%20%20%20%20%20%20letter-spacing:%200.03em;%20%20%20%20%20%20%20padding:%205px%2010px;%20%20%20%20%20%20%20border-radius:%208px;%20%20%20%20%20%20%20white-space:%20nowrap;%20%20%20%20%20%20%20position:%20relative;%20%20%20%20%20%20%20line-height:%201.2;%20%20%20%20%20%7D%20%20%20%20%20#telugu-reader-tooltip%20.tooltip-arrow%20%7B%20%20%20%20%20%20%20position:%20absolute;%20%20%20%20%20%20%20top:%20100%25;%20%20%20%20%20%20%20left:%2050%25;%20%20%20%20%20%20%20transform:%20translateX(-50%25);%20%20%20%20%20%20%20border-width:%206px;%20%20%20%20%20%20%20border-style:%20solid;%20%20%20%20%20%20%20border-color:%20#0f172a%20transparent%20transparent%20transparent;%20%20%20%20%20%7D%20%20%20%20%20#telugu-reader-highlight%20%7B%20%20%20%20%20%20%20position:%20fixed;%20%20%20%20%20%20%20z-index:%202147483646;%20%20%20%20%20%20%20pointer-events:%20none;%20%20%20%20%20%20%20display:%20none;%20%20%20%20%20%20%20background-color:%20#fef3c7;%20/*%20amber-100%20*/%20%20%20%20%20%20%20border-radius:%203px;%20%20%20%20%20%20%20mix-blend-mode:%20multiply;%20%20%20%20%20%20%20transition:%20all%200.15s%20ease-out;%20%20%20%20%20%7D%20%20%20%60,l=document.createElement(%22style%22);l.textContent=t,document.head.appendChild(l);let%20e=document.createElement(%22div%22);e.id=%22telugu-reader-highlight%22,document.body.appendChild(e);let%20n=document.createElement(%22div%22);n.id=%22telugu-reader-tooltip%22;let%20i=document.createElement(%22div%22);i.className=%22tooltip-content%22;let%20s=document.createElement(%22div%22);s.className=%22tooltip-arrow%22,n.appendChild(i),n.appendChild(s),document.body.appendChild(n),document.addEventListener(%22click%22,u=%3E%7BU(u.clientX,u.clientY)%7D),document.addEventListener(%22touchend%22,u=%3E%7Bif(u.changedTouches.length!==1)return;let%20o=u.changedTouches%5B0%5D;U(o.clientX,o.clientY)%7D),document.addEventListener(%22contextmenu%22,u=%3E%7Blet%20o=g(u.clientX,u.clientY);o&&(u.preventDefault(),o.phonetic&&o.rect&&r(o.phonetic,o.rect))%7D),window.addEventListener(%22scroll%22,a,%7Bpassive:!0%7D)%7Dvar%20j,B,q,H;%7D)();%20`;
+// 1. Lightweight Loader Bookmarklet (142 characters) - Never gets truncated by mobile Chrome
+const SHORT_BOOKMARKLET_CODE = `javascript:(function(){var s=document.createElement('script');s.src='https://telugu-reader-app.vercel.app/bookmarklet.js?t='+Date.now();document.body.appendChild(s);})();`;
 
 export default function BookmarkletModal({ isOpen, onClose }: BookmarkletModalProps) {
   const [copied, setCopied] = useState(false);
@@ -17,13 +17,13 @@ export default function BookmarkletModal({ isOpen, onClose }: BookmarkletModalPr
 
   async function handleCopy() {
     try {
-      await navigator.clipboard.writeText(BOOKMARKLET_CODE);
+      await navigator.clipboard.writeText(SHORT_BOOKMARKLET_CODE);
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);
     } catch {
-      // Fallback for older devices
+      // Fallback
       const textarea = document.createElement("textarea");
-      textarea.value = BOOKMARKLET_CODE;
+      textarea.value = SHORT_BOOKMARKLET_CODE;
       document.body.appendChild(textarea);
       textarea.select();
       document.execCommand("copy");
@@ -45,7 +45,7 @@ export default function BookmarkletModal({ isOpen, onClose }: BookmarkletModalPr
         </button>
 
         {/* Header */}
-        <div className="mb-5 flex items-center gap-3">
+        <div className="mb-4 flex items-center gap-3">
           <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-900 text-2xl font-bold text-amber-300 shadow-sm">
             📱
           </span>
@@ -60,7 +60,7 @@ export default function BookmarkletModal({ isOpen, onClose }: BookmarkletModalPr
         </div>
 
         {/* 1-Click Copy Button */}
-        <div className="mb-6 rounded-2xl bg-slate-900 p-4 text-center">
+        <div className="mb-5 rounded-2xl bg-slate-900 p-4 text-center">
           <button
             onClick={handleCopy}
             className={`w-full rounded-xl py-3 text-sm font-bold tracking-wide transition-all shadow-md ${copied
@@ -71,21 +71,21 @@ export default function BookmarkletModal({ isOpen, onClose }: BookmarkletModalPr
             {copied ? "✓ Copied to Clipboard!" : "📋 1-Click Copy Bookmarklet Code"}
           </button>
           <p className="mt-2 text-[11px] text-slate-400">
-            Self-contained • Works 100% offline • Zero permissions needed
+            Compact 140-char code • Fits phone bookmark limits • Auto-updates
           </p>
         </div>
 
         {/* Instructions */}
         <div className="space-y-3 text-xs text-slate-600">
           <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900">
-            How to use on your phone in 3 easy steps:
+            How to set up on your phone:
           </h3>
           <div className="flex items-start gap-2.5">
             <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-slate-100 font-bold text-slate-700">
               1
             </span>
             <p>
-              In Chrome or Safari on your phone, <strong>bookmark this page</strong> (or any page) and name it <strong>"Read Telugu"</strong>.
+              In Chrome or Safari on your phone, <strong>bookmark any webpage</strong> and name it <strong>"Read Telugu"</strong>.
             </p>
           </div>
           <div className="flex items-start gap-2.5">
@@ -93,23 +93,38 @@ export default function BookmarkletModal({ isOpen, onClose }: BookmarkletModalPr
               2
             </span>
             <p>
-              Edit the bookmark: delete the URL and <strong>paste the copied code</strong>.
+              Edit the bookmark: clear the URL field completely and <strong>paste the copied code</strong>.
             </p>
           </div>
-          <div className="flex items-start gap-2.5">
-            <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-slate-100 font-bold text-slate-700">
-              3
-            </span>
-            <p>
-              Whenever you visit any Telugu website, tap your address bar, type <strong>"Read Telugu"</strong>, and tap the bookmark. Tap any word to read!
+
+          {/* Critical Mobile Chrome Tip */}
+          <div className="rounded-xl border border-amber-200 bg-amber-50/80 p-3 text-amber-950">
+            <div className="flex items-center gap-1.5 font-bold text-[12px] text-amber-900 mb-1">
+              <span>⚠️</span>
+              <span>Crucial Mobile Chrome Step (How to run it):</span>
+            </div>
+            <p className="text-[11px] leading-relaxed">
+              Mobile Chrome <strong>blocks bookmarks tapped from the Bookmarks menu</strong>. To launch it:
             </p>
+            <ol className="mt-1.5 list-decimal pl-4 space-y-1 text-[11px]">
+              <li>Open any Telugu site (e.g., <em>eenadu.net</em>).</li>
+              <li>Tap the <strong>top URL address bar</strong> and type <strong>"Read Telugu"</strong>.</li>
+              <li>Tap the matching item in the dropdown with the <strong>⭐ star/bookmark icon</strong>!</li>
+              <li>You will see a <strong>"✨ Telugu Reader Active"</strong> toast at the top. Tap any word to read!</li>
+            </ol>
           </div>
+        </div>
+
+        {/* Alternative Tip */}
+        <div className="mt-4 rounded-xl border border-slate-100 bg-slate-50 p-3 text-[11px] text-slate-500">
+          <span className="font-semibold text-slate-700">💡 Zero-setup alternative: </span>
+          You can also just copy any news article link and paste it into the <strong>"Import Web Link"</strong> field on this web app. It will extract and display the article with instant tap-to-read on your phone!
         </div>
 
         {/* Done button */}
         <button
           onClick={onClose}
-          className="mt-6 w-full rounded-xl border border-slate-200 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+          className="mt-4 w-full rounded-xl border border-slate-200 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-50"
         >
           Got it
         </button>
