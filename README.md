@@ -173,6 +173,11 @@ npm run build:bookmarklet
 ```
 Generates the minified, single-file bundle in `extension/bookmarklet.min.js`.
 
+### 5. Live Deployment
+The web platform is live at:  
+👉 **[telugu-reader-app.vercel.app](https://telugu-reader-app.vercel.app/)**
+
+
 ---
 
 ## 🗺️ Roadmap & Next Steps
