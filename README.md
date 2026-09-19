@@ -1,187 +1,193 @@
-# Telugu Reader
+# 📖 Telugu Reader (తెలుగు రీడర్)
 
-An interactive Telugu reading assistant that helps users learn to read Telugu script through character-level phonetic transliteration.
-
----
-
-## Problem
-
-Many Telugu speakers can understand and speak Telugu fluently but struggle to read Telugu script.
-
-Most existing transliteration tools translate entire words directly into English, which does not help users understand:
-
-- how Telugu characters combine,
-- how matras modify consonants,
-- or how pronunciation is formed.
-
-This project focuses on teaching reading through interactive character-level breakdowns.
+> An interactive Telugu reading assistant and Unicode phonetic engine that teaches learners to read Telugu script through character-level orthographic decomposition.
 
 ---
 
-# How It Works
+## 🎯 The Core Idea & Linguistic Problem
 
-1. A Telugu paragraph/article is displayed.
-2. Every word is hoverable.
-3. Hovering over a word opens a popup.
-4. The popup breaks the word into Telugu character groups.
-5. Each group is transliterated phonetically into English.
+Many people understand and speak Telugu fluently, but struggle to read the script.
 
-Example:
+Standard transliteration and translation tools translate entire words into English at once (e.g., `నమస్కారం` → `namaskaram`). While this provides immediate comprehension, it completely obscures the orthographic structure of the language. As a result, learners do not understand:
+1. How base consonants combine with vowel matras (*Guninthalu*).
+2. How the virama (*halant*) suppresses inherent vowels.
+3. How complex conjunct consonants (*Ottulu / Samyuktaksharas*) modify phonetic pronunciation.
 
-తెలుగు
-
-↓
-
-తె → the  
-లు → lu  
-గు → gu
-
----
-
-# V1 Features
-
-- Telugu paragraph rendering
-- Hoverable words
-- Popup transliteration system
-- Telugu character segmentation
-- Character-level phonetic mapping
-
----
-
-# Tech Stack
-
-- **Web App**: Next.js, React 19, TypeScript, Tailwind CSS
-- **Browser Extension**: Manifest V3, TypeScript, esbuild
-- **Core Parser**: Pure TypeScript Unicode segmentation and phonetic mapping engine
-
----
-
-# Architecture & Dual Vision
-
-The project consists of two companion products powered by the same shared core parser:
-
-1. **Learning Web Platform (`mainsite`)**:
-   - Structured learning environment with beginner stories, alphabet guides, and interactive reading exercises.
-2. **Browser Extension (`/extension`)**:
-   - Manifest V3 browser extension enabling real-time phonetic reading assistance on any external Telugu webpage (e.g. *Eenadu*, *Sakshi*, *Andhra Jyothy*, Wikipedia).
-   - Zero-layout-shift floating tooltip with character boundary and conjunct consonant detection.
+**Telugu Reader** shifts the focus from whole-word translation to **character-level orthographic breakdown**. As the user reads, each word is segmented into its linguistic pronunciation clusters, revealing the phonetic anatomy of the script in real time.
 
 ```
-                  ┌────────────────────────┐
-                  │  src/core/parser/      │
-                  │  (Unicode Engine)      │
-                  └──────────┬─────────────┘
-                             │
-            ┌────────────────┴────────────────┐
-            ▼                                 ▼
-   ┌──────────────────┐             ┌──────────────────┐
-   │ Next.js Web App  │             │ Browser Extension│
-   │ (Learning Site)  │             │ (Live Web Reader)│
-   └──────────────────┘             └──────────────────┘
+                  తెలుగు
+                    ↓
+┌──────────────┬──────────────┬──────────────┐
+│      తె      │      లు      │      గు      │
+│     the      │      lu      │      gu      │
+└──────────────┴──────────────┴──────────────┘
 ```
 
 ---
 
-# Core Engineering Challenge
+## ⚙️ How the Engine Works
 
-The most technically important part of the project is correctly handling Telugu Unicode composition.
+The core of this project is a lightweight, zero-dependency engine (`src/core/parser/`) that solves two fundamental problems: **grouping combined letters** and **phonetic translation**.
 
-Example:
+### 1. The Challenge: Telugu Letters Stack
+In English, letters sit side-by-side (`c - a - t`). 
+In Telugu, a single printable sound unit often stacks multiple characters together:
+- A base consonant (`త`) + a vowel sign (`ె`) = **`తె`**
+- Stacking sub-consonants (*vattulu*): `స` + `్` + `త` + `్` + `ర` + `ీ` = **`స్త్రీ`** (`strii`)
 
-తె
+Standard code splitting (`word.split("")`) breaks these apart into broken, meaningless fragments. The engine ensures characters stay grouped as true phonetic units.
 
-Internally:
+### 2. Two-Step Pipeline
 
-త + ె
+The engine processes text in two simple stages:
 
-The parser engine must correctly identify Telugu combined character groups while preserving pronunciation structure.
+1. **Segmentation (`segmentTelugu.ts`)**: 
+   Scans words and groups consonants with their attached vowel signs (*matras*) and sub-consonants (*vattulu*) into whole sound units.
+   - Input: `"తెలుగు"`
+   - Output: `["తె", "లు", "గు"]`
 
----
+2. **Phonetic Mapping (`transliterate.ts`)**:
+   Translates each group into its natural English pronunciation:
+   - Base sounds: `క` → `ka`, `ప` → `pa`
+   - Modified by vowel signs: `తె` (త + ె) → `the`
+   - Blended conjuncts: `త్రు` (త + ర + ు) → `thru`
+   - Suppressed vowels via virama: `క్` → `k`
 
-# Planned Architecture
+### 3. Example Output
 
-ArticleRenderer
-│
-├── HoverableWord
-│
-└── TransliterationPopup
+| Telugu Cluster | Structure | Phonetic Sound |
+| :--- | :--- | :--- |
+| **తె** | Base `త` + Vowel Sign `ె` | `the` |
+| **లు** | Base `ల` + Vowel Sign `ు` | `lu` |
+| **గు** | Base `గ` + Vowel Sign `ు` | `gu` |
 
-> **Note:** The parser engine has been completed as an independent library. The UI consumes its output and should not modify parser logic unless genuine bugs are discovered.
-
----
-
-# Example Parser Output
-
-Input:
-
-తెలుగు
-
-Output:
-
+Raw engine output for `"తెలుగు"`:
+```json
 [
-  { telugu: "తె", english: "the" },
-  { telugu: "లు", english: "lu" },
-  { telugu: "గు", english: "gu" }
+  { "telugu": "తె", "english": "the" },
+  { "telugu": "లు", "english": "lu" },
+  { "telugu": "గు", "english": "gu" }
 ]
+```
+
 
 ---
 
-# Development Roadmap
+## 🏗️ System Architecture & Design
 
-## Phase 1: Core Unicode Engine
-- [x] Project initialization with TypeScript
-- [x] Telugu Unicode table definitions (vowels, consonants, matras, virama, anusvara)
-- [x] Unicode cluster segmentation (`segmentTelugu.ts`)
-- [x] Phonetic transliteration mapping rules (`transliterate.ts`, `phoneticMap.ts`)
-- [x] Core test runner script (`npm run parser-test`)
+The project is structured around a decoupled **Core Engine** consumed by two companion platforms:
 
-## Phase 2: Web Reader Foundation
-- [x] Interactive cluster component (`ClusterSpan.tsx`)
-- [x] Floating phonetic transliteration tooltip (`TransliterationPopup.tsx`)
-- [x] Reader renderer (`ArticleRenderer.tsx`)
-- [x] Isolated test playground route (`/playground`)
+```
+                           ┌──────────────────────────────┐
+                           │      src/core/parser/        │
+                           │   (Zero-dependency Engine)   │
+                           │  - unicodeTable.ts           │
+                           │  - segmentTelugu.ts          │
+                           │  - transliterate.ts          │
+                           │  - phoneticMap.ts            │
+                           └──────────────┬───────────────┘
+                                          │
+                  ┌───────────────────────┴───────────────────────┐
+                  ▼                                               ▼
+     ┌──────────────────────────┐                    ┌──────────────────────────┐
+     │     Next.js Web App      │                    │    Browser Extension     │
+     │      (Learning Hub)      │                    │   (Live Web Assistant)   │
+     │                          │                    │                          │
+     │  ArticleRenderer         │                    │  DOM Caret Detection     │
+     │   └─ HoverableWord       │                    │  Floating Overlay        │
+     │       └─ ClusterSpan     │                    │  Zero Layout Shifts      │
+     │           └─ Popup       │                    │  Touch Scrubbing         │
+     └──────────────────────────┘                    └────────────┬─────────────┘
+                                                                  │
+                                                                  ▼
+                                                     ┌──────────────────────────┐
+                                                     │    Mobile Bookmarklet    │
+                                                     │ (Standalone JS for Phone)│
+                                                     └──────────────────────────┘
+```
 
-## Phase 3: Browser Extension MVP (Manifest V3)
-- [x] Extension directory setup with `manifest.json` (V3)
-- [x] Bundling pipeline with `esbuild` (`npm run build:extension`)
-- [x] DOM text caret detection (`caretRangeFromPoint` / `caretPositionFromPoint`)
-- [x] Floating zero-layout-shift tooltip overlay (`content.css`)
-- [x] Boundary rollback fix for trailing characters and word edges
-- [x] Tuned popup typography and padding for clear legibility
-- [x] Extension popup toggle with Chrome storage sync (`popup.html` & `popup.ts`)
-- [x] Mobile touch support (tap-to-inspect and drag scrubbing)
-- [x] **Temporary Mobile Solution**: Standalone Bookmarklet (`npm run build:bookmarklet`) for running inside mobile Google Chrome (since mobile Chrome lacks native extension support). Future plan: dedicated Mobile PWA & Reader Mode.
-- [ ] Options page for setting custom tooltip font size and activation delay
+### Component Hierarchy (Web Platform)
 
-## Phase 4: Web Learning Platform Integration
-- [ ] Create curated sample articles dataset (`src/data/sampleArticles.ts`)
-- [ ] Clean article reader view on main page (`/`)
-- [ ] Support punctuation, paragraph breaks, and mixed English/Telugu text
-- [ ] Reading controls toolbar (font size adjuster, line spacing)
-- [ ] Custom text input box (paste any Telugu article to read)
+- **`ArticleRenderer`**: Parses raw Telugu text into paragraphs and words, coordinating single-active popup state across the entire document.
+- **`HoverableWord`**: Wraps individual words, computes cluster boundaries, and handles keyboard/mouse/touch events.
+- **`ClusterSpan`**: Highlights active phonetic segments on hover/tap.
+- **`TransliterationPopup`**: Zero-layout-shift floating tooltip presenting the cluster-by-cluster breakdown.
 
-## Phase 5: Educational & Assistance Features
-- [ ] Word-level breakdown mode (toggle between cluster-only and full-word decomposition)
-- [ ] Progressive assistance mode (hide transliterations after successful hover)
-- [ ] Audio pronunciation helper for basic consonants and vowels
-- [ ] Vocabulary bookmarking / saved words list
+### Extension System Design (Manifest V3)
 
----
-
-# Future Ideas
-
-- Progressive assistance reduction
-- Story reading mode
-- User progress tracking
-- AI pronunciation
-- OCR from Telugu books/images
-- Gamified learning system
+- **Target**: Any live Telugu webpage (*Eenadu*, *Sakshi*, *BBC Telugu*, Wikipedia).
+- **DOM Inspection Technique**: Uses non-destructive `document.caretRangeFromPoint()` and `document.caretPositionFromPoint()` to locate word boundaries directly within raw text nodes without wrapping or altering host page DOM elements.
+- **Zero Layout Shifts**: Renders a fixed floating tooltip layer above the viewport to avoid reflowing delicate news site layouts.
 
 ---
 
-# Current Status
+## 📜 Development Log & Evolution
 
-- ✅ **Core Parser Engine**: Completed and tested. Segments Telugu Unicode into pronunciation clusters and generates phonetic transliterations.
-- ✅ **Browser Extension**: Built and working. Users can hover over Telugu words on news websites (e.g., *Eenadu*, *Sakshi*) to see instant phonetic transliteration popups.
-- ✅ **Test Playground**: Active at `/playground` for evaluating cluster hover interactions and transliteration fidelity.
-- 🚧 **In Progress**: Completing the interactive reader on the main web platform (`/`) with sample articles and learning controls.
+The project was engineered incrementally across distinct phases:
+
+### Phase 1: Engine Foundation
+- Defined complete Telugu Unicode classification tables (`unicodeTable.ts`).
+- Implemented cluster segmentation regexes and state handlers (`segmentTelugu.ts`).
+- Created phonetic mapping tables and conjunct resolving rules (`transliterate.ts`, `phoneticMap.ts`).
+- Built standalone CLI testing suite (`npm run parser-test`) to validate edge cases (viramas, vowel signs, conjuncts).
+
+### Phase 2: Web Reader Foundation
+- Built React components for rendering Telugu text with hoverable clusters (`ClusterSpan`, `HoverableWord`, `TransliterationPopup`).
+- Created an isolated test playground route (`/playground`) to stress-test interactive hover states and viewport boundary clipping.
+
+### Phase 3: Desktop Browser Extension (Chrome MV3)
+- Packaged the core parser with `esbuild` into a zero-dependency Chrome extension.
+- Solved boundary rollback bugs where trailing matras or viramas were lost during caret hit-testing.
+- Added background sync toggle via `chrome.storage.local` to enable/disable reading assistance on demand.
+
+### Phase 4: Mobile Adaptation & Content Tools
+- **Mobile Bookmarklet**: Developed a standalone, minified bookmarklet (`extension/bookmarklet.min.js`) with touch drag-scrubbing for mobile Chrome.
+- **Web App Enhancements**: Integrated graded stories (Beginner to Advanced), URL text importer (`/api/fetch-article`), font scaling controls, and Active Recall mode.
+
+---
+
+## 💻 Developer Guide & Commands
+
+### 1. Test the Parser Engine
+Run the standalone TypeScript parser test suite:
+```bash
+npm run parser-test
+```
+
+### 2. Run the Next.js Web App
+```bash
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) to inspect the reader, or [http://localhost:3000/playground](http://localhost:3000/playground) for the isolated cluster inspector.
+
+### 3. Build the Extension Bundle
+```bash
+npm run build:extension
+```
+Bundles `extension/src/content.ts` and `extension/src/popup.ts` into `extension/content.js` and `extension/popup.js`.
+
+### 4. Build the Mobile Bookmarklet
+```bash
+npm run build:bookmarklet
+```
+Generates the minified, single-file bundle in `extension/bookmarklet.min.js`.
+
+---
+
+## 🗺️ Roadmap & Next Steps
+
+- [x] **Core Unicode Segmentation & Conjunct Parser**
+- [x] **Phonetic Transliteration Engine**
+- [x] **Zero-Layout-Shift Web Reader Components**
+- [x] **Manifest V3 Chrome Extension for External Sites**
+- [x] **Mobile Touch & Drag-Scrubbing Bookmarklet**
+- [ ] **Audio Phoneme Synthesis**: Pronunciation synthesis for individual vowels and base consonants.
+- [ ] **Saved Vocabulary / Spaced Repetition**: Bookmarking difficult conjuncts for active practice.
+- [ ] **Progressive Assistance Mode**: Automatically fading transliteration aids as reading accuracy improves.
+
+---
+
+## 📄 License
+
+MIT License.
